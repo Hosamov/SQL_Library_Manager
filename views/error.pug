@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+html(lang="en" dir="ltr")
+  head
+    meta(charset='utf-8')
+    meta(http-equiv='x-ua-compatible', content='ie=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    title Portfolio Site
+    link(href='https://fonts.googleapis.com/css?family=Merriweather:300,400,400i,700,800', rel='stylesheet')
+    link(rel='stylesheet', href='/static/css/normalize.css')
+    link(rel='stylesheet', href='/static/css/styles.css')
+
+  body
+
+    block content
+      div.error-container
+        h1= `Server Error`
+        h2= `Error status code: ${err.status} - Server Error`
+        p.error-p= `Oops! It looks like something went wrong on the server...`
+        
+        a.home(href='/')
+          button.home-button(type="button") Return to Homepage
+
+        div.error-stack
+
+          pre #{err.stack}
