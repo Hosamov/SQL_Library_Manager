@@ -14,6 +14,20 @@ function asyncHandler(cb){
   }
 }
 
+//function to handle error creation and logging
+function errorHandler(status, message) {
+  //Create a new the error class object
+  const err = new Error()
+  err.message = message;
+  err.status = status;
+
+  //log out the error code, and stack to the console, including message
+  console.log('Error status code: ' + err.status);
+  console.log(err.stack);
+
+  return err;
+}
+
 /* GET home page. */
 router.get('/', asyncHandler(async (req, res) => {
   const books = await Book.findAll();
@@ -32,8 +46,8 @@ router.get('/books', asyncHandler(async (req, res) => {
 /* GET books/new page.
 ** Shows the create new book form
 */
-router.get('/books/new', async (req, res) => {
-
+router.get('/books/new', (req, res) => {
+  res.render("new-book", { book: {}, title: "New Book" });
 });
 
 /* POST books/new
@@ -70,7 +84,5 @@ router.get('/error', (req, res, next) => {
   const err = errorHandler(500, 'There appears to be a problem with the server.');
   next(err);
 });
-
-
 
 module.exports = router;
