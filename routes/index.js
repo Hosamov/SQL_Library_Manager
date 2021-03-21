@@ -28,11 +28,14 @@ function errorHandler(status, message) {
   return err;
 }
 
-/* GET home page. */
+/* GET home page.
+** redirect to /books route
+*/
 router.get('/', asyncHandler(async (req, res) => {
-  const books = await Book.findAll();
-  res.json(books);
-  console.log('books: ' + books);
+  // const books = await Book.findAll();
+  // res.json(books);
+  // console.log('books: ' + books);
+  res.redirect('/books'); //redirect to /books route
 }));
 
 /* GET books page.
@@ -40,7 +43,7 @@ router.get('/', asyncHandler(async (req, res) => {
 */
 router.get('/books', asyncHandler(async (req, res) => {
   const books = await Book.findAll();
-  res.render("index", { books, title: "Library Books" });
+  res.render("index", { books, title: "Books" });
 }));
 
 /* GET books/new page.
@@ -51,11 +54,22 @@ router.get('/books/new', (req, res) => {
 });
 
 /* POST books/new
-** post a new book to the database
+** route responsible for adding a new book
 */
-router.post('/books/new', async (req, res) => {
-
-});
+router.post('/books/new', asyncHandler(async (req, res) => {
+  let book;
+  try {
+    book = await Book.create(req.body); //create a new article using req.body object
+    res.redirect("/books");
+  } catch (error) {
+    if(error.name == 'SequelizeValidationError') { // checking the error
+      book = await Book.build(req.body); //return a non-persistent (unsaved) model instance
+      res.render("books/new", { book, errors: error.errors, title: "Add A Book" })
+    } else { //throw other types of errors, handled by catch block in asyncHandler function
+      throw error //error cuaght in asyncHandler's catch block
+    }
+  }
+}));
 
 /* GET books/:id
 ** show book detail form
