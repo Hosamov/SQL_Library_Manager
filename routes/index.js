@@ -112,9 +112,15 @@ router.post('/books/:id', asyncHandler(async (req, res) => {
 ** deletes a book
 ** Note: deleting can't be undone.
 */
-router.post('/books/:id/delete', async (req, res) => {
-
-});
+router.post('/books/:id/delete', asyncHandler(async (req, res) => {
+  const book = await Book.findByPk(req.params.id);
+  if(book) {
+    await book.destroy(); //destroy/delete the book
+    res.redirect("/books"); //redirect to books path
+  } else {
+    res.sendStatus(404);
+  }
+}));
 
 //custom error handler for 500 Server error
 router.get('/error', (req, res, next) => {
