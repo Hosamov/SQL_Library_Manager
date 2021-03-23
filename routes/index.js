@@ -78,7 +78,7 @@ router.post('/books/new', asyncHandler(async (req, res) => {
 router.get('/books/:id', asyncHandler(async (req, res, next) => {
   const book = await Book.findByPk(req.params.id); //use Sequelize's findByPk to locate the id
   if(book) {
-    res.render("book-detail", { book, title: book.title });
+    res.render("update-book", { book, title: book.title });
   } else {
     //res.sendStatus(404); //send a 404 error if the route doesn't exist
     const err = errorHandler(404, "Oops! The page you requested doesn't appear to exist...");
@@ -96,7 +96,7 @@ router.post('/books/:id', asyncHandler(async (req, res, next) => {
     if(book) {
       await book.update(req.body); //update/change the book
       //res.redirect("/books/" + book.id);
-      res.render("update-book", { book, title: "Book Updated" })
+      res.redirect("/books") //redirect to main page
     } else {
       //res.sendStatus(404);
       const err = errorHandler(404, "Oops! The page you requested doesn't appear to exist...");

@@ -1,23 +1,38 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300&display=swap');
+
+/* Colors
+  base: #a4ebf3
+  dark: #6cdfec
+  btn: #0fd5eb
+  light: #cdf4f8
+  bg: #f4f9f9
+  a: #00b6cb
+
+ */
+
+
+
 body {
   padding: 10px 50px 50px;
-  font: 18px "Garamond", serif;
+  font: 16px "Roboto Mono", serif;
+  background-color: #f4f9f9;
 }
 
 a {
-  color: #019875;
+  color: #00b6cb;
   text-decoration: none;
   font-weight: bold;
   transition: 0.4s;
 }
 
   a:hover {
-    color: black;
+    color: red;
   }
 
 a.button, input[type=submit] {
   color: white;
-  background: #019875;
-  font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
+  background: #00b6cb;
+  font-family: "Roboto Mono", Helvetica, Arial, sans-serif;
   padding: 10px 14px 12px;
   font-size: 14px;
   border-radius: 2px;
@@ -34,7 +49,7 @@ input[type=submit] {
 }
 
   a.button:hover, input[type=submit]:hover {
-    background-color: #01b189;
+    background-color: #0fd5eb;
   }
 
 p {
@@ -80,7 +95,7 @@ label {
 
 input {
   padding: 10px;
-  font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
+  font-family: "Roboto Mono", Helvetica, Arial, sans-serif;
   font-size: 14px;
   border-radius: 2px;
   border-color: #E7E7E7;
