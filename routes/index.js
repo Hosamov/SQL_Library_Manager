@@ -50,11 +50,11 @@ router.get('/books', asyncHandler(async (req, res) => {
 ** Shows the create new book form
 */
 router.get('/books/new', (req, res) => {
-  res.render("new-book", { book: {}, title: "New Book" });
+  res.render("new-book", { book: {}, title: "Add a New Book" });
 });
 
 /* POST books/new
-** route responsible for adding a new book
+** route responsible for creating/adding a new book
 */
 router.post('/books/new', asyncHandler(async (req, res) => {
   let book;
@@ -62,11 +62,12 @@ router.post('/books/new', asyncHandler(async (req, res) => {
     book = await Book.create(req.body); //create a new article using req.body object
     res.redirect("/books");
   } catch (error) {
-    if(error.name == 'SequelizeValidationError') { // checking the error
+    console.log(error);
+    if(error.name === 'SequelizeValidationError') { // checking the error
       book = await Book.build(req.body); //return a non-persistent (unsaved) model instance
-      res.render("books/new", { book, errors: error.errors, title: "Add A Book" })
+      res.render("new-book", { book, errors: error.errors, title: "Add a New Book" }) //pass in error message
     } else { //throw other types of errors, handled by catch block in asyncHandler function
-      throw error //error cuaght in asyncHandler's catch block
+      throw error //error caught in asyncHandler's catch block
     }
   }
 }));
@@ -74,28 +75,32 @@ router.post('/books/new', asyncHandler(async (req, res) => {
 /* GET books/:id
 ** show book detail form
 */
-router.get('/books/:id', asyncHandler(async (req, res) => {
+router.get('/books/:id', asyncHandler(async (req, res, next) => {
   const book = await Book.findByPk(req.params.id); //use Sequelize's findByPk to locate the id
   if(book) {
     res.render("book-detail", { book, title: book.title });
   } else {
-    res.sendStatus(404);
+    //res.sendStatus(404); //send a 404 error if the route doesn't exist
+    const err = errorHandler(404, "Oops! The page you requested doesn't appear to exist...");
+    next(err);
   }
 }));
 
 /* POST books/:id
 ** update book info in the database
 */
-router.post('/books/:id', asyncHandler(async (req, res) => {
+router.post('/books/:id', asyncHandler(async (req, res, next) => {
   let book;
   try {
     book = await Book.findByPk(req.params.id);
     if(book) {
       await book.update(req.body); //update/change the book
       //res.redirect("/books/" + book.id);
-      res.render("update-book", { book, title: "Update Book" })
+      res.render("update-book", { book, title: "Book Updated" })
     } else {
-      res.sendStatus(404);
+      //res.sendStatus(404);
+      const err = errorHandler(404, "Oops! The page you requested doesn't appear to exist...");
+      next(err);
     }
   } catch (error) {
     if(error.name === "SequelizeValidationError") { //checking the error
@@ -112,13 +117,15 @@ router.post('/books/:id', asyncHandler(async (req, res) => {
 ** deletes a book
 ** Note: deleting can't be undone.
 */
-router.post('/books/:id/delete', asyncHandler(async (req, res) => {
+router.post('/books/:id/delete', asyncHandler(async (req, res, next) => {
   const book = await Book.findByPk(req.params.id);
   if(book) {
     await book.destroy(); //destroy/delete the book
     res.redirect("/books"); //redirect to books path
   } else {
-    res.sendStatus(404);
+    //res.sendStatus(404);
+    const err = errorHandler(404, "Oops! The page you requested doesn't appear to exist...");
+    next(err);
   }
 }));
 
