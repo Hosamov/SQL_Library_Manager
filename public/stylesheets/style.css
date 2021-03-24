@@ -10,46 +10,59 @@
 
  */
 
-
-
 body {
   padding: 10px 50px 50px;
   font: 16px "Roboto Mono", serif;
-  background-color: #f4f9f9;
+  background-color: black;
+  /* background-position: 1px;
+  background-image: url(../images/library.jpg); */
+  color: white;
 }
 
 a {
-  color: #00b6cb;
+  color: #f4f9f9;
   text-decoration: none;
   font-weight: bold;
   transition: 0.4s;
 }
 
   a:hover {
-    color: red;
+    color: #f1c55f;
   }
 
 a.button, input[type=submit] {
   color: white;
-  background: #00b6cb;
+  background: #070707;
   font-family: "Roboto Mono", Helvetica, Arial, sans-serif;
   padding: 10px 14px 12px;
-  font-size: 14px;
+  font-size: 16px;
+  font-weight: bold;
   border-radius: 2px;
   cursor: pointer;
+  border: white solid 1px;
 }
 
 form a.button, input[type=submit] {
   margin-left: 140px;
   transition: 0.4s;
+  font-weight: bold;
 }
+
+/* form {
+  border: white solid 1px;
+} */
 
 input[type=submit] {
   border: 0;
+  border: white solid 1px;
+  font-weight: bold;
 }
 
   a.button:hover, input[type=submit]:hover {
-    background-color: #0fd5eb;
+    background-color: #434343;
+    border: #e7e7e7 solid 1px;
+    font-weight: bold;
+    color: #f1c55f;
   }
 
 p {
@@ -67,6 +80,9 @@ h2 {
   border-top: 2px solid #e7e7e7;
   padding-top: 20px;
 }
+table {
+  border: white solid 1px;
+}
 
 th {
   border-bottom: 2px solid #D8B493;
@@ -76,10 +92,16 @@ th {
 
 tr {
   min-height: 50px;
+  /* background: #070707;
+  color: white; */
 }
 
-tr:nth-child(2n) {
-  background: #E7E7E7;
+tr:nth-child(1n) {
+  background: #070707;
+}
+
+ tr:nth-child(2n) {
+  background: #434343;
 }
 
 td {
@@ -99,6 +121,8 @@ input {
   font-size: 14px;
   border-radius: 2px;
   border-color: #E7E7E7;
+  color: #f1c55f;
+  background-color: #070707;
   transition: 0.4s;
 }
 
@@ -108,5 +132,5 @@ input[type=text] {
 }
 
 .error {
-  color: rgb(236, 15, 15);
+  color: #ff5019;
 }
