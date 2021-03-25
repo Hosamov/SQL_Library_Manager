@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Book = require('../models').Book; //import Book model from ../models folder
+const { Op } = require('sequelize');
 
 /* Handler function to wrap each route. */
 function asyncHandler(cb){
@@ -32,9 +33,6 @@ function errorHandler(status, message) {
 ** redirect to /books route
 */
 router.get('/', asyncHandler(async (req, res) => {
-  // const books = await Book.findAll();
-  // res.json(books);
-  // console.log('books: ' + books);
   res.redirect('/books'); //redirect to /books route
 }));
 
@@ -43,7 +41,7 @@ router.get('/', asyncHandler(async (req, res) => {
 */
 router.get('/books', asyncHandler(async (req, res) => {
   const books = await Book.findAll();
-  res.render("index", { books, title: "Books" });
+  res.render("index", { books, title: "Library Manager" });
 }));
 
 /* GET books/new page.
@@ -61,6 +59,43 @@ router.post('/books/new', asyncHandler(async (req, res) => {
   try {
     book = await Book.create(req.body); //create a new article using req.body object
     res.redirect("/books");
+  } catch (error) {
+    console.log(error);
+    if(error.name === 'SequelizeValidationError') { // checking the error
+      book = await Book.build(req.body); //return a non-persistent (unsaved) model instance
+      res.render("new-book", { book, errors: error.errors, title: "Add a New Book" }) //pass in error message
+    } else { //throw other types of errors, handled by catch block in asyncHandler function
+      throw error //error caught in asyncHandler's catch block
+    }
+  }
+}));
+
+/* POST books/search
+** search using book criteria
+** https://sequelize.org/master/manual/model-querying-basics.html
+*/
+router.post("/books/search", asyncHandler(async (req, res, next) => {
+  let searchQuery; // declare variable to hold search query value
+  if(req.body["searchbar"] === '') {
+    searchQuery = null; //if there is no query, set to null
+  } else {
+    searchQuery = req.body["searchbar"]; //if there was a query, set to retrieve the body value of the searchbar
+  }
+  try {
+    const books = await Book.findAll({
+      where: {
+        [Op.or]: [ //using Op.substring (example: %hat%), use searchQuery to query the db for whole or partial matches
+          {title:  {[Op.substring]: searchQuery}},
+          {author: {[Op.substring]: searchQuery}},
+          {genre: {[Op.substring]: searchQuery}},
+          {year: {[Op.substring]: searchQuery}},
+        ]
+      },
+      //Sort list by title in ascending order/alphabetically
+       order: [['title', 'ASC']]
+    });
+    console.log(searchQuery);
+    res.render("search", { books, title: "Search results"});
   } catch (error) {
     console.log(error);
     if(error.name === 'SequelizeValidationError') { // checking the error

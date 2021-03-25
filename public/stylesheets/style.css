@@ -7,7 +7,6 @@
   light: #cdf4f8
   bg: #f4f9f9
   a: #00b6cb
-
  */
 
 body {
@@ -35,9 +34,9 @@ a.button, input[type=submit] {
   background: #070707;
   font-family: "Roboto Mono", Helvetica, Arial, sans-serif;
   padding: 10px 14px 12px;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: bold;
-  border-radius: 2px;
+  border-radius: 5px;
   cursor: pointer;
   border: white solid 1px;
 }
@@ -46,6 +45,7 @@ form a.button, input[type=submit] {
   margin-left: 140px;
   transition: 0.4s;
   font-weight: bold;
+  border-radius: 10%;
 }
 
 /* form {
@@ -116,10 +116,10 @@ label {
 }
 
 input {
-  padding: 10px;
+  padding: 5px;
   font-family: "Roboto Mono", Helvetica, Arial, sans-serif;
   font-size: 14px;
-  border-radius: 2px;
+  border-radius: 5px;
   border-color: #E7E7E7;
   color: #f1c55f;
   background-color: #070707;
@@ -129,6 +129,18 @@ input {
 input[type=text] {
   margin-left: 7px;
   width: 300px;
+}
+
+hr {
+  border-style: dashed;
+}
+
+#search {
+  color: white;
+}
+
+#search-by {
+  color: black;
 }
 
 .error {
