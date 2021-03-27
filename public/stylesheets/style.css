@@ -41,6 +41,36 @@ a.button, input[type=submit] {
   border: white solid 1px;
 }
 
+/* active button style
+  Used for pagination
+*/
+.button-active {
+  color: black;
+  background: white;
+  font-family: "Roboto Mono", Helvetica, Arial, sans-serif;
+  padding: 10px 14px 12px;
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  border: gray solid 1px;
+}
+
+/* INactive button style
+  Used for pagination forward & back buttons
+*/
+a.button-inactive {
+  color: darkgray;
+  background: black;
+  font-family: "Roboto Mono", Helvetica, Arial, sans-serif;
+  padding: 10px 14px 12px;
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  border: gray solid 1px;
+}
+
 form a.button, input[type=submit] {
   margin-left: 140px;
   transition: 0.4s;

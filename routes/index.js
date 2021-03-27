@@ -17,7 +17,7 @@ function asyncHandler(cb){
 
 //function to handle error creation and logging
 function errorHandler(status, message) {
-  //Create a new the error class object
+  //Create a new error class object
   const err = new Error()
   err.message = message;
   err.status = status;
@@ -33,7 +33,7 @@ function errorHandler(status, message) {
 ** redirect to /books route
 */
 router.get('/', asyncHandler(async (req, res) => {
-  res.redirect('/books'); //redirect to /books route
+  res.redirect('/books/page/1'); //redirect to /books route
 }));
 
 /* GET books page.
@@ -58,7 +58,7 @@ router.post('/books/new', asyncHandler(async (req, res) => {
   let book;
   try {
     book = await Book.create(req.body); //create a new article using req.body object
-    res.redirect("/books");
+    res.redirect("/");
   } catch (error) {
     console.log(error);
     if(error.name === 'SequelizeValidationError') { // checking the error
@@ -67,6 +67,33 @@ router.post('/books/new', asyncHandler(async (req, res) => {
     } else { //throw other types of errors, handled by catch block in asyncHandler function
       throw error //error caught in asyncHandler's catch block
     }
+  }
+}));
+
+/* GET books/page
+** Pagination buttons
+*/
+router.get('/books/page/:page', asyncHandler(async (req, res, next) => {
+  const page = parseInt(req.params.page); //convert to int
+  const maxBooks = 8;
+
+  const books = await Book.findAll({
+    limit: maxBooks,
+    offset: (maxBooks * (page - 1)), //determine current page
+    order: [['title', 'ASC']] //sort in ascending order, by title
+  });
+
+  const pages = await Book.findAll();
+  let pagesTotal = Math.ceil(pages.length / maxBooks);
+  const nextPage = page + 1;
+  const prevPage = page - 1;
+
+  if(page > 0 && page < (pagesTotal + 1) ) { //make sure the page exists before rendering
+    res.render("index", { books, title: "Library Manager", page, pagesTotal, prevPage, nextPage});
+  } else {
+    //send 404 error if the page doesn't exist
+    const err = errorHandler(404, "Oops! The page you requested doesn't appear to exist...");
+    next(err);
   }
 }));
 
@@ -81,6 +108,7 @@ router.post("/books/search", asyncHandler(async (req, res, next) => {
   } else {
     searchQuery = req.body["searchbar"]; //if there was a query, set to retrieve the body value of the searchbar
   }
+
   try {
     const books = await Book.findAll({
       where: {
@@ -94,13 +122,19 @@ router.post("/books/search", asyncHandler(async (req, res, next) => {
       //Sort list by title in ascending order/alphabetically
        order: [['title', 'ASC']]
     });
-    console.log(searchQuery);
-    res.render("search", { books, title: "Search results"});
+
+    //check to see if there are results...
+    //if(books.length !== 0 && searchQuery !== null) {
+      res.render("index", { books, title: "Search results"});
+    //} else {
+    //  res.render ("index", { books, message: "No results", query: searchQuery, title: "Search results"});
+    //}
+
   } catch (error) {
     console.log(error);
     if(error.name === 'SequelizeValidationError') { // checking the error
       book = await Book.build(req.body); //return a non-persistent (unsaved) model instance
-      res.render("new-book", { book, errors: error.errors, title: "Add a New Book" }) //pass in error message
+      res.render("index", { book, errors: error.errors, title: "Library Manager" }) //pass in error message
     } else { //throw other types of errors, handled by catch block in asyncHandler function
       throw error //error caught in asyncHandler's catch block
     }
@@ -115,7 +149,7 @@ router.get('/books/:id', asyncHandler(async (req, res, next) => {
   if(book) {
     res.render("update-book", { book, title: book.title });
   } else {
-    //res.sendStatus(404); //send a 404 error if the route doesn't exist
+    //send a 404 error if the route doesn't exist
     const err = errorHandler(404, "Oops! The page you requested doesn't appear to exist...");
     next(err);
   }

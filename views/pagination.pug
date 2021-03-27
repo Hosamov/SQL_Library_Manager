@@ -1,0 +1,21 @@
+p  
+  - if (prevPage >= 1) {
+      a(class="button" href="/books/page/" + prevPage) <
+  - } else {
+      a(class="button-inactive") <
+  - }
+  
+    - for (let i = 1; i <= pagesTotal; i++) {
+       //- a(class="button" href='/books/page/' + i)= i
+       - if(page === i) {
+          a(class="button-active" href='/books/page/' + i)= i
+       - } else {
+          a(class="button" href='/books/page/' + i)= i
+       - }
+    - } 
+    
+  - if (page < pagesTotal) {
+      a(class="button" href="/books/page/" + nextPage) >
+  - } else {
+      a(class="button-inactive") >
+  - }

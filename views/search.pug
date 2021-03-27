@@ -3,17 +3,16 @@ extends layout
 
 block content
   h1= title
+  h2= message
   
   include search-field
   
   //-form(action="/books/new", method="post")
 
-
   p
     form(action="/books/new", method="get")
+    a(class="button" href="/") Home
     a(class="button" href="/books/new") Add a New Book
-    a(class="button" href="/books/") Home
-
     
   table 
     thead
@@ -30,3 +29,6 @@ block content
           td= book.author
           td= book.genre
           td= book.year
+  
+  include pagination
+        
