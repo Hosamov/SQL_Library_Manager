@@ -1,20 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300&display=swap');
 
 /* Colors
-  base: #a4ebf3
-  dark: #6cdfec
-  btn: #0fd5eb
-  light: #cdf4f8
-  bg: #f4f9f9
-  a: #00b6cb
+  base: black
+  light: white
+  button hover: #f1c55f
+  button-bg: #070707
+  button border: gray
+  other: #E7E7E7
  */
 
 body {
   padding: 10px 50px 50px;
   font: 16px "Roboto Mono", serif;
   background-color: black;
-  /* background-position: 1px;
-  background-image: url(../images/library.jpg); */
   color: white;
 }
 
