@@ -5,15 +5,29 @@ block content
   h1= title
   
   include search-field
-  
-  //-form(action="/books/new", method="post")
 
   p
     form(action="/books/new", method="get")
+    // - display reset button: redirects to home(/) route
+    - if (canReset) { 
+      a(class="button" href="/") Cancel
+    - }
     a(class="button" href="/books/new") Add a New Book
-  if (books.length === 0) 
-      h2 No results found.
-  else  
+  
+  - if (mode === "search" && books.length !== 0) {
+      h2 Results for 
+        em #{searchQuery}:
+  - } else if (mode === "search" && books.length === 0){
+      - if (searchQuery === null) {
+        h2 No results found for: 
+          em [blank query]
+      - } else {
+        h2 No results found for: 
+          em #{searchQuery}
+      - }  
+  - }
+  
+  - if (books.length > 0) 
     table 
       thead
         tr
@@ -31,3 +45,8 @@ block content
             td= book.year
     
     include pagination
+
+  - else 
+    h3 No Results found... Please try again.
+    
+    
